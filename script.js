@@ -12,14 +12,15 @@ const gameBoard = (function () {
   const p2 = player("Abebe", "O");
 
   const makeMove = (position) => {
-    turn++;
     const currentMarker = turn % 2 === 0 ? p1.marker : p2.marker;
-    gameBoard.update(currentMarker, position);
+    update(currentMarker, position);
+    turn++;
     return currentMarker;
   };
 
   const click = () => {
     const cells = document.querySelectorAll(".cell");
+    const messageEl = document.getElementById("message");
 
     cells.forEach((cell, index) => {
       cell.addEventListener("click", () => {
@@ -27,20 +28,39 @@ const gameBoard = (function () {
           const marker = makeMove(index);
           cell.innerText = marker;
           cell.classList.add(marker.toLowerCase());
+
+          if (checkWinner(marker)) {
+            messageEl.textContent = `${marker} wins! 🎉`;
+            setTimeout(() => reset(), 1500);
+            return;
+          }
+
+          if (boardFull()) {
+            messageEl.textContent = "It's a draw! 🤝";
+            setTimeout(() => reset(), 1500);
+            return;
+          }
         }
       });
     });
   };
-  const boardFull = () =>
-    board.every((element) => {
-      if (element === "") {
-        return false;
-      } else {
-        return true;
-      }
+
+  const boardFull = () => board.every((el) => el !== "");
+
+  const reset = () => {
+    board.fill("");
+    turn = 0;
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((cell) => {
+      cell.innerText = "";
+      cell.classList.remove("x", "o");
     });
-  const reset = () => (board = ["", "", "", "", "", "", "", "", ""]);
+    const messageEl = document.getElementById("message");
+    if (messageEl) messageEl.textContent = "";
+  };
+
   const getBoard = () => [...board];
+
   return { update, reset, getBoard, boardFull, click };
 })();
 
