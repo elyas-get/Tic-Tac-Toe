@@ -1,6 +1,7 @@
 const gameBoard = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
   let turn = 0;
+  let p1, p2;
 
   const update = (value, position) => {
     if (board[position] === "") {
@@ -8,8 +9,11 @@ const gameBoard = (function () {
     }
   };
 
-  const p1 = player("Elyas", "X");
-  const p2 = player("Abebe", "O");
+  const init = (playerData) => {
+    p1 = player(playerData.p1Name, playerData.p1Marker);
+    p2 = player(playerData.p2Name, playerData.p2Marker);
+    click();
+  };
 
   const makeMove = (position) => {
     const currentMarker = turn % 2 === 0 ? p1.marker : p2.marker;
@@ -30,9 +34,15 @@ const gameBoard = (function () {
           cell.classList.add(marker.toLowerCase());
 
           if (checkWinner(marker)) {
-            messageEl.textContent = `${marker} wins! 🎉`;
-            setTimeout(() => reset(), 1500);
-            return;
+            if (marker == p1.marker) {
+              messageEl.textContent = `${p1.name} wins! 🎉`;
+              setTimeout(() => reset(), 1500);
+              return;
+            } else {
+              messageEl.textContent = `${p2.name} wins! 🎉`;
+              setTimeout(() => reset(), 1500);
+              return;
+            }
           }
 
           if (boardFull()) {
@@ -61,7 +71,7 @@ const gameBoard = (function () {
 
   const getBoard = () => [...board];
 
-  return { update, reset, getBoard, boardFull, click };
+  return { update, reset, getBoard, boardFull, click, init };
 })();
 
 function player(name, marker) {
@@ -86,15 +96,27 @@ function checkWinner(marker) {
     pattern.every((index) => b[index] === marker)
   );
 }
-
 function startGame() {
-  const startBtn = document.getElementById("startBtn");
+  const form = document.querySelector("form");
   const board = document.querySelector(".game-board");
+  const startBtn = document.getElementById("startBtn");
 
-  startBtn.addEventListener("click", () => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const p1Name = form.player1.value;
+    const p1Marker = form.p1Marker.value;
+
+    const p2Name = form.player2.value;
+    const p2Marker = form.p2Marker.value;
+
+    form.reset();
+
     board.classList.remove("hidden");
     startBtn.style.display = "none";
-    gameBoard.click();
+    form.style.display = "none";
+
+    gameBoard.init({ p1Name, p1Marker, p2Name, p2Marker });
   });
 }
 

@@ -10,7 +10,29 @@
     <div class="container">
       <p id="message" class="message"></p>
       <h1>Tic Tac Toe</h1>
-      <button id="startBtn">Start Game</button>
+      <form>
+        <fieldset>
+          <div>
+            <label for="player1">Player 1</label>
+            <input class="input" type="text" name="player1" required />
+          </div>
+          <div>
+            <label for="marker">Marker</label>
+            <input class="input" type="text" name="p1Marker" required />
+          </div>
+        </fieldset>
+        <fieldset>
+          <div>
+            <label for="player2">Player 2</label>
+            <input class="input" type="text" name="player2" required />
+          </div>
+          <div>
+            <label for="marker">Marker</label>
+            <input class="input" type="text" name="p2Marker" required />
+          </div>
+        </fieldset>
+        <button type="submit" id="startBtn">Start Game</button>
+      </form>
       <div class="game-board hidden">
         <div class="cell"></div>
         <div class="cell"></div>

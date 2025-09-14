@@ -36,6 +36,9 @@ button {
   font-weight: bold;
   margin-bottom: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  position: absolute;
+  bottom: -90px;
+  right: 170px;
 }
 
 button:hover {
@@ -92,4 +95,32 @@ button:hover {
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   min-height: 30px;
+}
+
+form {
+  display: flex;
+  gap: 20px;
+  border: none;
+  position: relative;
+}
+
+form > fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.input:focus {
+  border-color: #388e3c;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
 }
